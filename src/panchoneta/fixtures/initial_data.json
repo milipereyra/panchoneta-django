@@ -1,0 +1,67 @@
+[
+  {
+    "model": "panchoneta.bebida",
+    "pk": 1,
+    "fields": {
+      "nombre": "COCA COLA",
+      "precio": "700.00"
+    }
+  },
+  {
+    "model": "panchoneta.pancho",
+    "pk": 1,
+    "fields": {
+      "nombre": "CLÁSICO",
+      "precio": "1200.00"
+    }
+  },
+  {
+    "model": "panchoneta.salsa",
+    "pk": 1,
+    "fields": {
+      "nombre": "MOSTAZA",
+      "descripcion": "Salsa clásica de mostaza."
+    }
+  },
+  {
+    "model": "panchoneta.sucursal",
+    "pk": 1,
+    "fields": {
+      "nombre": "SUCURSAL CENTRO",
+      "calle": "San Martín",
+      "nroCalle": 123,
+      "piso": 1
+    }
+  },
+  {
+    "model": "panchoneta.venta",
+    "pk": 1,
+    "fields": {
+      "nombre": "VENTA #1",
+      "fecha": "2025-06-24",
+      "hora": "14:00:00",
+      "sucursal": 1
+    }
+  },
+  {
+    "model": "panchoneta.detalleventa",
+    "pk": 1,
+    "fields": {
+      "nombre": "DETALLE 1",
+      "cantidad": 2,
+      "subtotal": "2400.00",
+      "bebida": 1,
+      "pancho": 1,
+      "venta": 1
+    }
+  },
+  {
+    "model": "panchoneta.detallepancho",
+    "pk": 1,
+    "fields": {
+      "nombre": "CLÁSICO + MOSTAZA",
+      "idSalsa": 1,
+      "idPancho": 1
+    }
+  }
+]
