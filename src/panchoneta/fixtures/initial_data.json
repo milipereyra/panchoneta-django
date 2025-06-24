@@ -7,6 +7,22 @@
       "precio": "700.00"
     }
   },
+    {
+    "model": "panchoneta.bebida",
+    "pk": 2,
+    "fields": {
+      "nombre": "SPRITE",
+      "precio": "700.00"
+    }
+  },
+    {
+    "model": "panchoneta.bebida",
+    "pk": 3,
+    "fields": {
+      "nombre": "AGUA",
+      "precio": "500.00"
+    }
+  },
   {
     "model": "panchoneta.pancho",
     "pk": 1,
@@ -16,11 +32,43 @@
     }
   },
   {
+    "model": "panchoneta.pancho",
+    "pk": 2,
+    "fields": {
+      "nombre": "ESPECIAL",
+      "precio": "1500.00"
+    }
+  },
+    {
+    "model": "panchoneta.pancho",
+    "pk": 3,
+    "fields": {
+      "nombre": "SUPERPANCHO",
+      "precio": "1400.00"
+    }
+  },
+  {
     "model": "panchoneta.salsa",
     "pk": 1,
     "fields": {
       "nombre": "MOSTAZA",
       "descripcion": "Salsa clásica de mostaza."
+    }
+  },
+    {
+    "model": "panchoneta.salsa",
+    "pk": 2,
+    "fields": {
+      "nombre": "MAYONESA",
+      "descripcion": "Mayonesa Natura."
+    }
+  },
+    {
+    "model": "panchoneta.salsa",
+    "pk": 3,
+    "fields": {
+      "nombre": "KETCHUP",
+      "descripcion": "Ketchup Hellmans."
     }
   },
   {
