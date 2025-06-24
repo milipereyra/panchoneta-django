@@ -25,6 +25,10 @@ class NombreAbstract(models.Model):
         abstract = True
         ordering = ['nombre']
 
+class BaseModel(models.Model):
+    class Meta:
+        abstract = True
+
 class Bebida(NombreAbstract):
     nombre = models.TextField(_('nombre'), 
             help_text=_('nombre de la bebida'),
@@ -103,7 +107,7 @@ class Sucursal(NombreAbstract):
                                  )
     
         
-class Venta(NombreAbstract):
+class Venta(models.Model):
     #atributos
     fecha = models.DateField(_('fecha'),
                             help_text=_('fecha de la venta'),
@@ -116,34 +120,31 @@ class Venta(NombreAbstract):
                             null=True
                             )
 
+    def mostrar_total(self):
+        return self.calcular_total()
+
+    mostrar_total.short_description = 'Total'
+
+
     #relaciones
     sucursal=models.ForeignKey(Sucursal, help_text=_('sucursal'), related_name='%(app_label)s_%(class)s_related',on_delete=models.PROTECT, blank=False,null=False)
 
+    def __str__(self):
+        return f"Venta #{self.pk} - {self.fecha} - {self.sucursal.nombre if self.sucursal else ''}"
+
+    def calcular_total(self):
+        total = 0
+        for detalle in self.detalleventa_set.all():
+            if detalle.subtotal is None:
+                detalle.subtotal = detalle.calcular_subtotal()
+                detalle.save()
+            total += detalle.subtotal
+        return total
     class Meta:
         verbose_name = 'venta'
         verbose_name_plural = 'ventas'
 
-class DetalleVenta(NombreAbstract):
-    cantidad = models.BigIntegerField(_('cantidad'),
-        help_text=_('cantidad panchos'),
-        blank=True,
-        null=True
-    )
-    subtotal = models.DecimalField(_('subtotal'),
-        help_text=_('subtotal del detalleventa'),
-        max_digits=10,
-        decimal_places=2,
-        blank=True,
-        null=True
-        )
-    bebida= models.ForeignKey(
-        Bebida,
-        help_text=_('bebida encargadas'),
-        related_name='%(app_label)s_%(class)s_related',
-        on_delete=models.PROTECT,
-        blank=True,
-        null=True
-    )
+class DetalleVenta(models.Model):
     pancho = models.ForeignKey(
         Pancho,
         help_text=_('bebida encargadas'),
@@ -152,13 +153,53 @@ class DetalleVenta(NombreAbstract):
         blank=True,
         null=True
     )
+
+    cantidad = models.BigIntegerField(_('cantidad'),
+        help_text=_('cantidad panchos'),
+        blank=True,
+        null=True
+    )
+    
+    bebida= models.ForeignKey(
+        Bebida,
+        help_text=_('bebida encargadas'),
+        related_name='%(app_label)s_%(class)s_related',
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True
+    )
+
+    subtotal = models.DecimalField(
+        _('subtotal'),
+        max_digits=10,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        editable=False  #para evitar que se modifique manualmente en admin
+    )
+
+    def save(self, *args, **kwargs):
+        self.subtotal = self.calcular_subtotal()
+        super().save(*args, **kwargs)
+    
+    def calcular_subtotal(self):
+        precio_pancho = self.pancho.precio if self.pancho else 0
+        precio_bebida = self.bebida.precio if self.bebida else 0
+        cantidad = self.cantidad or 0
+        return (precio_pancho * cantidad) + precio_bebida 
+    
     venta = models.ForeignKey(Venta, on_delete=models.PROTECT, null=True, blank=True)
+
+    def __str__(self):
+        pancho_nombre = self.pancho.nombre if self.pancho else "Sin pancho"
+        bebida_nombre = self.bebida.nombre if self.bebida else "Sin bebida"
+        return f"{pancho_nombre} x{self.cantidad or 0} + {bebida_nombre}"
 
     class Meta:
         verbose_name = 'detalleventa'
-        verbose_name_plural = 'detalles'
+        verbose_name_plural = 'detallesVenta'
 
-class DetallePancho(NombreAbstract):
+class DetallePancho(models.Model):
     #idSalsaxPancho, idSalsa, idPancho
     idSalsa=models.ForeignKey(Salsa, help_text=_('salsa'), related_name='%(app_label)s_%(class)s_related',on_delete=models.PROTECT, blank=False,null=False)
     idPancho=models.ForeignKey(Pancho, help_text=_('pancho'), related_name='%(app_label)s_%(class)s_related',on_delete=models.PROTECT, blank=False,null=False)

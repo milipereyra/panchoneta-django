@@ -7,14 +7,25 @@ from panchoneta.models import *
 # Register your models here.
 
 admin.site.register(Sucursal)
-admin.site.register(DetalleVenta)
 admin.site.register(DetallePancho)
 admin.site.register(Salsa)
-admin.site.register(Bebida)
+
+
+@admin.register(Bebida)
+class BebidaAdmin(admin.ModelAdmin):
+    list_display = ['nombre', 'precio']
+    search_fields = ['nombre']
+
+@admin.register(DetalleVenta)
+class DetalleVentaAdmin(admin.ModelAdmin):
+    list_display = ('pancho', 'cantidad', 'bebida', 'subtotal', 'venta')
+    readonly_fields = ['subtotal']
 
 class DetalleVentaInline(admin.TabularInline):
     model = DetalleVenta
     extra = 0
+    readonly_fields = ['subtotal']
+    
 
 class DetallePanchoInlineFormset(BaseInlineFormSet):
     def clean(self):
@@ -35,7 +46,7 @@ class VentaAdmin(admin.ModelAdmin):
         DetalleVentaInline
     ]
     list_display = ('fecha', 'sucursal') 
-
+    
     ordering = ['fecha']
     search_fields = ['nombre']
     list_filter = ['sucursal']
