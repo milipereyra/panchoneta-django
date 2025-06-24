@@ -10,11 +10,16 @@ admin.site.register(Sucursal)
 admin.site.register(DetalleVenta)
 admin.site.register(DetallePancho)
 admin.site.register(Salsa)
-admin.site.register(Bebida)
+
+@admin.register(Bebida)
+class BebidaAdmin(admin.ModelAdmin):
+    list_display = ['nombre', 'precio']
+    search_fields = ['nombre']
 
 class DetalleVentaInline(admin.TabularInline):
     model = DetalleVenta
     extra = 0
+    readonly_fields = ['subtotal']
 
 class DetallePanchoInlineFormset(BaseInlineFormSet):
     def clean(self):
@@ -34,7 +39,7 @@ class VentaAdmin(admin.ModelAdmin):
     inlines = [
         DetalleVentaInline
     ]
-    list_display = ('fecha', 'sucursal') 
+    list_display = ('fecha', 'sucursal','total') 
 
     ordering = ['fecha']
     search_fields = ['nombre']
