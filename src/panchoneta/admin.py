@@ -18,7 +18,7 @@ class BebidaAdmin(admin.ModelAdmin):
 
 @admin.register(DetalleVenta)
 class DetalleVentaAdmin(admin.ModelAdmin):
-    list_display = ('pancho', 'cantidad', 'bebida', 'subtotal', 'venta')
+    list_display = ('pancho', 'cantidad', 'bebida','cantidadBebida', 'subtotal', 'venta')
     readonly_fields = ['subtotal']
 
 class DetalleVentaInline(admin.TabularInline):

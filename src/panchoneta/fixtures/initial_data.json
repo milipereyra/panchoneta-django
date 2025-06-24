@@ -65,6 +65,7 @@
       "pancho": 1,
       "cantidad": 2,
       "bebida": 1,
+      "cantidadBebida":1,
       "venta": 1
     }
   },

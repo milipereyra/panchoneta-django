@@ -169,6 +169,12 @@ class DetalleVenta(models.Model):
         null=True
     )
 
+    cantidadBebida = models.BigIntegerField(_('cantidad bebida'),
+        help_text=_('cantidad bebidas'),
+        blank=True,
+        null=True
+    )
+
     subtotal = models.DecimalField(
         _('subtotal'),
         max_digits=10,
@@ -186,14 +192,15 @@ class DetalleVenta(models.Model):
         precio_pancho = self.pancho.precio if self.pancho else 0
         precio_bebida = self.bebida.precio if self.bebida else 0
         cantidad = self.cantidad or 0
-        return (precio_pancho * cantidad) + precio_bebida 
+        cantidadBebida = self.cantidadBebida or 0
+        return (precio_pancho * cantidad) + (precio_bebida * cantidadBebida)
     
     venta = models.ForeignKey(Venta, on_delete=models.PROTECT, null=True, blank=True)
 
     def __str__(self):
         pancho_nombre = self.pancho.nombre if self.pancho else "Sin pancho"
         bebida_nombre = self.bebida.nombre if self.bebida else "Sin bebida"
-        return f"{pancho_nombre} x{self.cantidad or 0} + {bebida_nombre}"
+        return f"{pancho_nombre} x{self.cantidad or 0} + {bebida_nombre}x{self.cantidadBebida or 0}"
 
     class Meta:
         verbose_name = 'detalleventa'
