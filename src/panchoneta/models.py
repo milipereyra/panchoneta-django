@@ -28,10 +28,11 @@ class BaseModel(models.Model):
 
 #clases del modelo
 class Bebida(NombreAbstract):
-    nombre = models.TextField(_('nombre'), 
+    nombre = models.CharField(_('nombre'), 
             help_text=_('nombre de la bebida'),
             blank=True,
-            null=True
+            null=True,
+            max_length=120
         )
     precio = models.DecimalField( _('precio'),
             help_text=_('Precio de la bebida'),
@@ -43,10 +44,11 @@ class Bebida(NombreAbstract):
 
 class Pancho(NombreAbstract):
     #idPancho, nombre, precio
-    nombre = models.TextField(_('nombre'),
+    nombre = models.CharField(_('nombre'),
                               help_text=_('nombre del pancho'),
                               blank=False,
-                              null=False
+                              null=False,
+                             max_length=120
                             )
     
     precio = models.DecimalField(_('precio'),
@@ -62,10 +64,11 @@ class Pancho(NombreAbstract):
 class Salsa(NombreAbstract):
     
     #idSalsa, nombreSalsa, descripcion
-    nombre = models.TextField(_('nombre'),
+    nombre = models.CharField(_('nombre'),
                                    help_text=_('nombre de la salsa'),
                                    blank = True,
-                                   null=True
+                                   null=True,
+                                    max_length=120
                                 )
     
     descripcion = models.TextField(_('descripcion'),
@@ -80,16 +83,18 @@ class Salsa(NombreAbstract):
     
 class Sucursal(NombreAbstract):
     #nombre, calle, nroCalle, piso
-    nombre = models.TextField(_('nombre'), 
+    nombre = models.CharField(_('nombre'), 
                                 help_text=_('nombre de la sucursal'),
                                 blank=True,
-                                null=True
+                                null=True,
+                                max_length=120
                             )
     
-    calle = models.TextField(_('calle'), 
+    calle = models.CharField(_('calle'), 
                              help_text=_('calle de la sucursal'),
                              blank=True,
-                             null=True
+                             null=True,
+                             max_length=120
                              )
     
     nroCalle = models.BigIntegerField(_('nroCalle'),
@@ -107,8 +112,8 @@ class Sucursal(NombreAbstract):
 
 #tabla intermedia
 class DetallePancho(models.Model):
-    idSalsa = models.ForeignKey(Salsa, on_delete=models.PROTECT)
-    idPancho = models.ForeignKey(Pancho, on_delete=models.PROTECT)
+    idSalsa = models.ForeignKey(Salsa, on_delete=models.PROTECT, verbose_name='Salsa')
+    idPancho = models.ForeignKey(Pancho, on_delete=models.PROTECT, verbose_name='Pancho')
 
 
 #venta y detalles separados
@@ -137,7 +142,7 @@ class Venta(models.Model):
 class DetallePanchoVenta(models.Model):
     venta = models.ForeignKey(Venta, on_delete=models.PROTECT, related_name='detalles_panchos')
     pancho = models.ForeignKey(Pancho, on_delete=models.PROTECT)
-    cantidad = models.PositiveIntegerField(default=1)
+    cantidad = models.PositiveIntegerField(default=0)
 
     @property
     def subtotal(self):
@@ -150,7 +155,7 @@ class DetallePanchoVenta(models.Model):
 class DetalleBebidaVenta(models.Model):
     venta = models.ForeignKey(Venta, on_delete=models.PROTECT, related_name='detalles_bebidas')
     bebida = models.ForeignKey(Bebida, on_delete=models.PROTECT)
-    cantidad = models.PositiveIntegerField(default=1)
+    cantidad = models.PositiveIntegerField(default=0)
 
     @property
     def subtotal(self):

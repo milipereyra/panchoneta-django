@@ -3,9 +3,18 @@ from django.core.exceptions import ValidationError
 from django.forms.models import BaseInlineFormSet
 from panchoneta.models import *
 
-# registros básicos
-admin.site.register(Sucursal)
-admin.site.register(Salsa)
+# registros
+
+@admin.register(Sucursal)
+class SucursalAdmin(admin.ModelAdmin):
+    #nombre, calle, nroCalle, piso
+    list_display = ('nombre','calle','nroCalle','piso')
+
+@admin.register(Salsa)
+class SalsaAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'descripcion')
+    search_fields = ['nombre']
+
 
 #se realiza la validación de asignar máximo 3 salsas al pancho cuando se crea
 class DetallePanchoInlineFormset(BaseInlineFormSet):
@@ -40,6 +49,8 @@ class DetallePanchoVentaInline(admin.TabularInline):
     extra = 0
     readonly_fields = ['subtotal']
     fields = ('pancho', 'cantidad', 'subtotal')
+    verbose_name = "Detalle de Pancho"
+    verbose_name_plural = "Detalles de Pancho"
 
 #segundo inline, detallebebidaventas, se definen las columnas que queremos ver
 class DetalleBebidaVentaInline(admin.TabularInline):
@@ -47,14 +58,17 @@ class DetalleBebidaVentaInline(admin.TabularInline):
     extra = 0
     readonly_fields = ['subtotal']
     fields = ('bebida', 'cantidad', 'subtotal')
+    verbose_name = "Detalle de Bebida"
+    verbose_name_plural = "Detalles de Bebida"
 
 #register venta
 @admin.register(Venta)
 class VentaAdmin(admin.ModelAdmin):
     inlines = [DetallePanchoVentaInline, DetalleBebidaVentaInline]
-    list_display = ('fecha', 'sucursal', 'total')
+    list_display = ('fecha','hora', 'sucursal', 'total')
     ordering = ['fecha']
     list_filter = ['sucursal']
+    readonly_fields = ['total']
 
     def total(self, obj):
         return obj.calcular_total()
