@@ -120,11 +120,6 @@ class Venta(models.Model):
                             null=True
                             )
 
-    def mostrar_total(self):
-        return self.calcular_total()
-
-    mostrar_total.short_description = 'Total'
-
 
     #relaciones
     sucursal=models.ForeignKey(Sucursal, help_text=_('sucursal'), related_name='%(app_label)s_%(class)s_related',on_delete=models.PROTECT, blank=False,null=False)
@@ -140,6 +135,7 @@ class Venta(models.Model):
                 detalle.save()
             total += detalle.subtotal
         return total
+    
     class Meta:
         verbose_name = 'venta'
         verbose_name_plural = 'ventas'
@@ -175,20 +171,9 @@ class DetalleVenta(models.Model):
         null=True
     )
 
-    subtotal = models.DecimalField(
-        _('subtotal'),
-        max_digits=10,
-        decimal_places=2,
-        blank=True,
-        null=True,
-        editable=False  #para evitar que se modifique manualmente en admin
-    )
-
-    def save(self, *args, **kwargs):
-        self.subtotal = self.calcular_subtotal()
-        super().save(*args, **kwargs)
     
-    def calcular_subtotal(self):
+    @property
+    def subtotal(self):
         precio_pancho = self.pancho.precio if self.pancho else 0
         precio_bebida = self.bebida.precio if self.bebida else 0
         cantidad = self.cantidad or 0
