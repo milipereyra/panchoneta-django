@@ -1,25 +1,20 @@
 from django.db import models
-
-# Create your models here.
-from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.models import User
 
-#clase herencia/interfaz
+#clases abstractas
 class NombreAbstract(models.Model):
     nombre = models.CharField(
         _('Nombre'),
         help_text=_('Nombre descriptivo'),
         max_length=200,
-        # unique=True,
     )
 
     def save(self, *args, **kwargs):
         self.nombre = self.nombre.upper()
         return super().save(*args, **kwargs)
 
-    def __str__(self) -> str:
-        return f'{self.nombre}'
+    def __str__(self):
+        return self.nombre
 
     class Meta:
         abstract = True
@@ -29,6 +24,9 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
+
+
+#clases del modelo
 class Bebida(NombreAbstract):
     nombre = models.TextField(_('nombre'), 
             help_text=_('nombre de la bebida'),
@@ -106,92 +104,57 @@ class Sucursal(NombreAbstract):
                                   null=True
                                  )
     
-        
+
+#tabla intermedia
+class DetallePancho(models.Model):
+    idSalsa = models.ForeignKey(Salsa, on_delete=models.PROTECT)
+    idPancho = models.ForeignKey(Pancho, on_delete=models.PROTECT)
+
+
+#venta y detalles separados
+#por un lado tenemos detalle pancho ventas que incluye los detalles de la venta pero referidos a panchos
+#y por otro lado tenemos detalle bebida venta que incluye los detalles de la venta pero referidos a bebidas
 class Venta(models.Model):
-    #atributos
-    fecha = models.DateField(_('fecha'),
-                            help_text=_('fecha de la venta'),
-                            blank=True,
-                            null=True
-                            )    
-    hora = models.TimeField(_('hora'),
-                            help_text= _('hora de la venta'),
-                            blank=True,
-                            null=True
-                            )
-
-
-    #relaciones
-    sucursal=models.ForeignKey(Sucursal, help_text=_('sucursal'), related_name='%(app_label)s_%(class)s_related',on_delete=models.PROTECT, blank=False,null=False)
+    fecha = models.DateField(_('fecha'), blank=True, null=True)
+    hora = models.TimeField(_('hora'), blank=True, null=True)
+    sucursal = models.ForeignKey(Sucursal, on_delete=models.PROTECT)
 
     def __str__(self):
-        return f"Venta #{self.pk} - {self.fecha} - {self.sucursal.nombre if self.sucursal else ''}"
+        return f"Venta #{self.pk} - {self.fecha} - {self.sucursal.nombre}"
 
+    #total de la venta, se suman los detalles tanto de panchos como de bebidas
     def calcular_total(self):
-        total = 0
-        for detalle in self.detalleventa_set.all():
-            if detalle.subtotal is None:
-                detalle.subtotal = detalle.calcular_subtotal()
-                detalle.save()
-            total += detalle.subtotal
-        return total
-    
+        total_panchos = sum(dp.subtotal for dp in self.detalles_panchos.all())
+        total_bebidas = sum(db.subtotal for db in self.detalles_bebidas.all())
+        return total_panchos + total_bebidas
+
     class Meta:
         verbose_name = 'venta'
         verbose_name_plural = 'ventas'
 
-class DetalleVenta(models.Model):
-    pancho = models.ForeignKey(
-        Pancho,
-        help_text=_('bebida encargadas'),
-        related_name='%(app_label)s_%(class)s_related',
-        on_delete=models.PROTECT,
-        blank=True,
-        null=True
-    )
+#detalle pancho venta, se relaciona con venta (venta tiene detallepanchoventa:DetallePanchoVenta)
 
-    cantidad = models.BigIntegerField(_('cantidad'),
-        help_text=_('cantidad panchos'),
-        blank=True,
-        null=True
-    )
-    
-    bebida= models.ForeignKey(
-        Bebida,
-        help_text=_('bebida encargadas'),
-        related_name='%(app_label)s_%(class)s_related',
-        on_delete=models.PROTECT,
-        blank=True,
-        null=True
-    )
+class DetallePanchoVenta(models.Model):
+    venta = models.ForeignKey(Venta, on_delete=models.PROTECT, related_name='detalles_panchos')
+    pancho = models.ForeignKey(Pancho, on_delete=models.PROTECT)
+    cantidad = models.PositiveIntegerField(default=1)
 
-    cantidadBebida = models.BigIntegerField(_('cantidad bebida'),
-        help_text=_('cantidad bebidas'),
-        blank=True,
-        null=True
-    )
-
-    
     @property
     def subtotal(self):
-        precio_pancho = self.pancho.precio if self.pancho else 0
-        precio_bebida = self.bebida.precio if self.bebida else 0
-        cantidad = self.cantidad or 0
-        cantidadBebida = self.cantidadBebida or 0
-        return (precio_pancho * cantidad) + (precio_bebida * cantidadBebida)
-    
-    venta = models.ForeignKey(Venta, on_delete=models.PROTECT, null=True, blank=True)
+        return (self.pancho.precio or 0) * self.cantidad
 
     def __str__(self):
-        pancho_nombre = self.pancho.nombre if self.pancho else "Sin pancho"
-        bebida_nombre = self.bebida.nombre if self.bebida else "Sin bebida"
-        return f"{pancho_nombre} x{self.cantidad or 0} + {bebida_nombre}x{self.cantidadBebida or 0}"
+        return f"{self.pancho.nombre} x{self.cantidad}"
 
-    class Meta:
-        verbose_name = 'detalleventa'
-        verbose_name_plural = 'detallesVenta'
+#detalle bebida venta, se relaciona con venta (venta tiene detallepbebidaventa:DetalleBebidaVenta)
+class DetalleBebidaVenta(models.Model):
+    venta = models.ForeignKey(Venta, on_delete=models.PROTECT, related_name='detalles_bebidas')
+    bebida = models.ForeignKey(Bebida, on_delete=models.PROTECT)
+    cantidad = models.PositiveIntegerField(default=1)
 
-class DetallePancho(models.Model):
-    #idSalsaxPancho, idSalsa, idPancho
-    idSalsa=models.ForeignKey(Salsa, help_text=_('salsa'), related_name='%(app_label)s_%(class)s_related',on_delete=models.PROTECT, blank=False,null=False)
-    idPancho=models.ForeignKey(Pancho, help_text=_('pancho'), related_name='%(app_label)s_%(class)s_related',on_delete=models.PROTECT, blank=False,null=False)
+    @property
+    def subtotal(self):
+        return (self.bebida.precio or 0) * self.cantidad
+
+    def __str__(self):
+        return f"{self.bebida.nombre} x{self.cantidad}"

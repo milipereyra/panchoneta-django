@@ -1,20 +1,33 @@
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from .models import DetalleVenta, Venta
+from decimal import Decimal
+from .models import Venta, DetallePanchoVenta, DetalleBebidaVenta
+from decimal import Decimal
 
 def actualizar_total_venta(venta):
-    total = 0
-    for detalle in venta.detalleventa_set.all():
-        total += detalle.subtotal or 0
+    total = Decimal('0')
+
+    for detalle in venta.detalles_panchos.all():
+        if detalle.subtotal:
+            total += Decimal(detalle.subtotal)
+
+    for detalle in venta.detalles_bebidas.all():
+        if detalle.subtotal:
+            total += Decimal(detalle.subtotal)
+
     venta.total = total
     venta.save()
 
-@receiver(post_save, sender=DetalleVenta)
-def actualizar_total_venta_al_guardar(sender, instance, **kwargs):
+#signals para DetallePanchoVenta
+@receiver(post_save, sender=DetallePanchoVenta)
+@receiver(post_delete, sender=DetallePanchoVenta)
+def actualizar_total_venta_por_pancho(sender, instance, **kwargs):
     if instance.venta:
         actualizar_total_venta(instance.venta)
 
-@receiver(post_delete, sender=DetalleVenta)
-def actualizar_total_venta_al_eliminar(sender, instance, **kwargs):
+#signals para DetalleBebidaVenta
+@receiver(post_save, sender=DetalleBebidaVenta)
+@receiver(post_delete, sender=DetalleBebidaVenta)
+def actualizar_total_venta_por_bebida(sender, instance, **kwargs):
     if instance.venta:
         actualizar_total_venta(instance.venta)

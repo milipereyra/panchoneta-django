@@ -8,11 +8,27 @@
     }
   },
   {
+    "model": "panchoneta.bebida",
+    "pk": 2,
+    "fields": {
+      "nombre": "FANTA",
+      "precio": "650.00"
+    }
+  },
+  {
     "model": "panchoneta.pancho",
     "pk": 1,
     "fields": {
       "nombre": "CLÁSICO",
       "precio": "1200.00"
+    }
+  },
+  {
+    "model": "panchoneta.pancho",
+    "pk": 2,
+    "fields": {
+      "nombre": "ESPECIAL",
+      "precio": "1500.00"
     }
   },
   {
@@ -32,14 +48,6 @@
     }
   },
   {
-    "model": "panchoneta.salsa",
-    "pk": 3,
-    "fields": {
-      "nombre": "JAMON Y QUESO",
-      "descripcion": "Salsa con jamón y queso."
-    }
-  },
-  {
     "model": "panchoneta.sucursal",
     "pk": 1,
     "fields": {
@@ -50,31 +58,64 @@
     }
   },
   {
-    "model": "panchoneta.venta",
-    "pk": 1,
-    "fields": {
-      "fecha": "2025-06-24",
-      "hora": "14:00:00",
-      "sucursal": 1
-    }
-  },
-  {
-    "model": "panchoneta.detalleventa",
-    "pk": 1,
-    "fields": {
-      "pancho": 1,
-      "cantidad": 2,
-      "bebida": 1,
-      "cantidadBebida":1,
-      "venta": 1
-    }
-  },
-  {
     "model": "panchoneta.detallepancho",
     "pk": 1,
     "fields": {
       "idSalsa": 1,
       "idPancho": 1
+    }
+  },
+  {
+    "model": "panchoneta.detallepancho",
+    "pk": 2,
+    "fields": {
+      "idSalsa": 2,
+      "idPancho": 1
+    }
+  },
+  {
+    "model": "panchoneta.venta",
+    "pk": 1,
+    "fields": {
+      "fecha": "2025-06-25",
+      "hora": "12:30:00",
+      "sucursal": 1
+    }
+  },
+  {
+    "model": "panchoneta.detallepanchoventa",
+    "pk": 1,
+    "fields": {
+      "venta": 1,
+      "pancho": 1,
+      "cantidad": 2
+    }
+  },
+  {
+    "model": "panchoneta.detallepanchoventa",
+    "pk": 2,
+    "fields": {
+      "venta": 1,
+      "pancho": 2,
+      "cantidad": 1
+    }
+  },
+  {
+    "model": "panchoneta.detallebebidaventa",
+    "pk": 1,
+    "fields": {
+      "venta": 1,
+      "bebida": 1,
+      "cantidad": 3
+    }
+  },
+  {
+    "model": "panchoneta.detallebebidaventa",
+    "pk": 2,
+    "fields": {
+      "venta": 1,
+      "bebida": 2,
+      "cantidad": 1
     }
   }
 ]
