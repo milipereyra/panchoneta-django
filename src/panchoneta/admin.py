@@ -29,6 +29,8 @@ class DetallePanchoInline(admin.TabularInline):
     extra = 0
     max_num = 3
     formset = DetallePanchoInlineFormset
+    verbose_name = "Detalle del Pancho | Salsa que incluye"
+    verbose_name_plural = "Detalles del Pancho | Salsas que incluye"
 
 #registros admin especificos (personalizados)
 @admin.register(Pancho)
@@ -49,8 +51,8 @@ class DetallePanchoVentaInline(admin.TabularInline):
     extra = 0
     readonly_fields = ['subtotal']
     fields = ('pancho', 'cantidad', 'subtotal')
-    verbose_name = "Detalle de Pancho"
-    verbose_name_plural = "Detalles de Pancho"
+    verbose_name = "Detalle de la venta de Pancho"
+    verbose_name_plural = "Detalles de la venta de Pancho"
 
 #segundo inline, detallebebidaventas, se definen las columnas que queremos ver
 class DetalleBebidaVentaInline(admin.TabularInline):
@@ -58,8 +60,8 @@ class DetalleBebidaVentaInline(admin.TabularInline):
     extra = 0
     readonly_fields = ['subtotal']
     fields = ('bebida', 'cantidad', 'subtotal')
-    verbose_name = "Detalle de Bebida"
-    verbose_name_plural = "Detalles de Bebida"
+    verbose_name = "Detalle de la venta de Bebida"
+    verbose_name_plural = "Detalles de la venta de Bebida"
 
 #register venta
 @admin.register(Venta)
@@ -73,3 +75,5 @@ class VentaAdmin(admin.ModelAdmin):
     def total(self, obj):
         return obj.calcular_total()
     total.short_description = 'Total de la Venta'
+
+

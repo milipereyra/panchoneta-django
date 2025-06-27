@@ -4,7 +4,7 @@
     "pk": 1,
     "fields": {
       "nombre": "COCA COLA",
-      "precio": "700.00"
+      "precio": "1700.00"
     }
   },
   {
@@ -12,7 +12,15 @@
     "pk": 2,
     "fields": {
       "nombre": "FANTA",
-      "precio": "650.00"
+      "precio": "1650.00"
+    }
+  },
+  {
+    "model": "panchoneta.bebida",
+    "pk": 3,
+    "fields": {
+      "nombre": "AGUA MINERAL",
+      "precio": "1000.00"
     }
   },
   {
@@ -48,6 +56,14 @@
     }
   },
   {
+    "model": "panchoneta.salsa",
+    "pk": 3,
+    "fields": {
+      "nombre": "CHIMICHURRI",
+      "descripcion": "Contiene ajo, vinagre, aceite, sal, pimiento, perejil y ajo."
+    }
+  },
+  {
     "model": "panchoneta.sucursal",
     "pk": 1,
     "fields": {
@@ -55,6 +71,16 @@
       "calle": "San Martín",
       "nroCalle": 123,
       "piso": 1
+    }
+  },
+  {
+    "model": "panchoneta.sucursal",
+    "pk": 2,
+    "fields": {
+      "nombre": "SUCURSAL COSTANERA",
+      "calle": "Bv. Sarmiento",
+      "nroCalle": 899,
+      "piso": 0
     }
   },
   {

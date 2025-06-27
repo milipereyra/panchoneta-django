@@ -29,7 +29,7 @@ class BaseModel(models.Model):
 #clases del modelo
 class Bebida(NombreAbstract):
     nombre = models.CharField(_('nombre'), 
-            help_text=_('nombre de la bebida'),
+            help_text=_('Nombre de la bebida'),
             blank=True,
             null=True,
             max_length=120
@@ -45,7 +45,7 @@ class Bebida(NombreAbstract):
 class Pancho(NombreAbstract):
     #idPancho, nombre, precio
     nombre = models.CharField(_('nombre'),
-                              help_text=_('nombre del pancho'),
+                              help_text=_('Nombre del pancho'),
                               blank=False,
                               null=False,
                              max_length=120
@@ -54,7 +54,7 @@ class Pancho(NombreAbstract):
     precio = models.DecimalField(_('precio'),
                                     max_digits=15,
                                     decimal_places=2,
-                                    help_text=_('precio del pancho expresado en pesos'),
+                                    help_text=_('Precio expresado en pesos'),
                                     default=0
                                 )
     class Meta:
@@ -65,49 +65,52 @@ class Salsa(NombreAbstract):
     
     #idSalsa, nombreSalsa, descripcion
     nombre = models.CharField(_('nombre'),
-                                   help_text=_('nombre de la salsa'),
+                                   help_text=_('Nombre de la salsa'),
                                    blank = True,
                                    null=True,
                                     max_length=120
                                 )
     
     descripcion = models.TextField(_('descripcion'),
-                                   help_text=_('descripcion de la salsa'),
+                                   help_text=_('Descripción de la salsa'),
                                    blank=True,
                                    null=True)
     
     class Meta:
-        verbose_name='salsa',
+        verbose_name='salsa'
         verbose_name_plural='salsas'
     
     
 class Sucursal(NombreAbstract):
     #nombre, calle, nroCalle, piso
     nombre = models.CharField(_('nombre'), 
-                                help_text=_('nombre de la sucursal'),
+                                help_text=_('Nombre de la sucursal'),
                                 blank=True,
                                 null=True,
                                 max_length=120
                             )
     
     calle = models.CharField(_('calle'), 
-                             help_text=_('calle de la sucursal'),
+                             help_text=_('Calle de la sucursal'),
                              blank=True,
                              null=True,
                              max_length=120
                              )
     
     nroCalle = models.BigIntegerField(_('nroCalle'),
-                                      help_text=_('nro. de la calle'),
+                                      help_text=_('Nro. de la calle'),
                                       blank=True,
                                       null=True
                             )
     
     piso = models.BigIntegerField(_('piso'),
-                                  help_text=_('nro. de piso'),
+                                  help_text=_('Nro. de piso'),
                                   blank=True,
                                   null=True
                                  )
+    class Meta:
+        verbose_name='sucursal'
+        verbose_name_plural='sucursales'
     
 
 #tabla intermedia
