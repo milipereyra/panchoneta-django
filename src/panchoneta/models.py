@@ -153,6 +153,10 @@ class DetallePanchoVenta(models.Model):
 
     def __str__(self):
         return f"{self.pancho.nombre} x{self.cantidad}"
+    
+    class Meta:
+        verbose_name = "Detalle de la venta de Pancho"
+        verbose_name_plural = "Detalles de la venta de Pancho"
 
 #detalle bebida venta, se relaciona con venta (venta tiene detallepbebidaventa:DetalleBebidaVenta)
 class DetalleBebidaVenta(models.Model):
@@ -166,3 +170,7 @@ class DetalleBebidaVenta(models.Model):
 
     def __str__(self):
         return f"{self.bebida.nombre} x{self.cantidad}"
+
+    class Meta:
+        verbose_name = "Detalle de la venta de Bebida"
+        verbose_name_plural = "Detalles de la venta de Bebida"

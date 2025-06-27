@@ -51,8 +51,7 @@ class DetallePanchoVentaInline(admin.TabularInline):
     extra = 0
     readonly_fields = ['subtotal']
     fields = ('pancho', 'cantidad', 'subtotal')
-    verbose_name = "Detalle de la venta de Pancho"
-    verbose_name_plural = "Detalles de la venta de Pancho"
+
 
 #segundo inline, detallebebidaventas, se definen las columnas que queremos ver
 class DetalleBebidaVentaInline(admin.TabularInline):
@@ -60,8 +59,7 @@ class DetalleBebidaVentaInline(admin.TabularInline):
     extra = 0
     readonly_fields = ['subtotal']
     fields = ('bebida', 'cantidad', 'subtotal')
-    verbose_name = "Detalle de la venta de Bebida"
-    verbose_name_plural = "Detalles de la venta de Bebida"
+
 
 #register venta
 @admin.register(Venta)
@@ -71,6 +69,7 @@ class VentaAdmin(admin.ModelAdmin):
     ordering = ['fecha']
     list_filter = ['sucursal']
     readonly_fields = ['total']
+    search_fields = ['sucursal__nombre', 'fecha']
 
     def total(self, obj):
         return obj.calcular_total()
