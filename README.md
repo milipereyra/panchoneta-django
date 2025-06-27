@@ -9,8 +9,8 @@ Práctico de Mapeo Objeto-Relacional para la materia, Bases de Datos de la carre
 
 **Referencia Rápida**
 
-**Mantenido Por:** Grupo 09
-**Integrantes:**
+## **Mantenido por Grupo 09**
+### **Integrantes:**
 - Maggi, Mateo David.
 - Pereyra Argüello, Milagros.
 - Petry, Victoria.
@@ -22,7 +22,7 @@ Práctico de Mapeo Objeto-Relacional para la materia, Bases de Datos de la carre
 El código proporcionado se ofrece "tal cual", sin garantía de ningún tipo, expresa o implícita. En ningún caso los autores o titulares de derechos de autor serán responsables de cualquier reclamo, daño u otra responsabilidad.
 
 ## Introducción
-Este tutorial te guiará paso a paso en la creación y despliegue de una aplicación Django utilizando Docker y Docker Compose. El objetivo es que puedas levantar un entorno de desarrollo profesional, portable y fácil de mantener, ideal tanto para pruebas como para producción.
+Este proyecto tiene como finalidad aplicar los contenidos vistos en la Cátedra de **Bases de Datos** mediante el desarrollo de un sistema para la gestión de un negocio de venta de panchos y bebidas. A través de este trabajo se busca poner en práctica conceptos fundamentales como el modelado de datos.
 
 ---
 
@@ -37,14 +37,13 @@ Este tutorial te guiará paso a paso en la creación y despliegue de una aplicac
 ---
 ## **Instrucciones de para levantar el proyecto**
 
-## 1. Clonar el repositorio
+### 1. Clonar el repositorio
 > **Puedes copiar todo este bloque y pegarlo directamente en tu terminal.**
 ```sh
 git clone https://github.com/milipereyra/panchoneta-django
 ```
----
 
-## 2. Configuración de Variables de Entorno
+### 2. Configuración de Variables de Entorno
 En el archivo `.env.db` utilizado para almacenar las variables de entorno necesarias para la conexión a la base de datos configurarlo de la siguiente manera:
 
 > **Puedes copiar todo este bloque y pegarlo directamente en tu archivo .env.db.**
@@ -62,7 +61,7 @@ LANG=es_AR.utf8
 POSTGRES_INITDB_ARGS="--locale-provider=icu --icu-locale=es-AR --auth-local=trust"
 ```
 
-## 3. Levantar el proyecto
+### 3. Levantar el proyecto
 Desde la terminal levantar el proyecto con el siguiente comando
 > **Windows**
 ```txt
@@ -72,11 +71,11 @@ Desde la terminal levantar el proyecto con el siguiente comando
 ```txt
 . init.sh
 ```
+
+### 4. Acceso a La Panchoneta
+Accede a la administración de DJango en `http://localhost:8000/admin/panchoneta`
+
 ---
-
-## 4. Acceso a La Panchoneta
-Accede a la administración de DJango en `[Dockerfile](http://localhost:8000/admin/panchoneta)`
-
 
 ## **Servicios Definidos en Docker Compose**
 ### 1. `db`
@@ -107,7 +106,7 @@ Accede a la administración de DJango en `[Dockerfile](http://localhost:8000/adm
 
 
 ---
-##**Estructura del Proyecto: "La Panchoneta"
+## **Estructura del Proyecto: "La Panchoneta"**
 ```
 PANCHONETA/
 ├── DiagramaClases
