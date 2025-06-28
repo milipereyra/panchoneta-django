@@ -53,7 +53,7 @@ En el archivo `.env.db` utilizado para almacenar las variables de entorno necesa
 DATABASE_ENGINE=django.db.backends.postgresql
 POSTGRES_HOST=db
 POSTGRES_PORT=5432
-POSTGRES_DB=postgres
+POSTGRES_DB=panchoneta
 POSTGRES_USER=postgres
 PGUSER=${POSTGRES_USER}
 POSTGRES_PASSWORD=postgres
