@@ -62,7 +62,8 @@ POSTGRES_INITDB_ARGS="--locale-provider=icu --icu-locale=es-AR --auth-local=trus
 ```
 
 ### 3. Levantar el proyecto
-Desde la terminal levantar el proyecto con el siguiente comando
+> [!IMPORTANT]
+> Si es la primera vez que se levanta el proyecto, desde la terminal ingresa el siguiente comando:
 > **Windows**
 ```txt
 ./init.ps1
@@ -71,6 +72,13 @@ Desde la terminal levantar el proyecto con el siguiente comando
 ```txt
 . init.sh
 ```
+
+> [!IMPORTANT]
+> En caso de que ya lo hayas levantado previamente, solo levanta el contenedor
+> ```txt
+docker compuse up -d backend
+```
+
 
 ### 4. Acceso a La Panchoneta
 Accede a la administración de DJango en `http://localhost:8000/admin/panchoneta`
