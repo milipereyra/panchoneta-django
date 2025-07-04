@@ -62,22 +62,23 @@ POSTGRES_INITDB_ARGS="--locale-provider=icu --icu-locale=es-AR --auth-local=trus
 ```
 
 ### 3. Levantar el proyecto
-> [!IMPORTANT]
+> [!NOTE]
 > Si es la primera vez que se levanta el proyecto, desde la terminal ingresa el siguiente comando:
+> 
 > **Windows**
-```txt
-./init.ps1
-```
+>```txt
+>./init.ps1
+>```
 > **Linux**
-```txt
-. init.sh
-```
+>```txt
+>. init.sh
+>```
 
 > [!IMPORTANT]
 > En caso de que ya lo hayas levantado previamente, solo levanta el contenedor
 > ```txt
-docker compuse up -d backend
-```
+>docker compuse up -d backend
+>```
 
 
 ### 4. Acceso a La Panchoneta
